@@ -25,13 +25,18 @@ function User() {
 
 
     const handleDelete = async (userid) => {
-        await axios.delete(`http://localhost:4000/api/delete/user/${userid}`)
-            .then((resp) => {
-                setUser((prevUser) => prevUser.filter((user) => user._id !== userid))
-                toast.success(resp.data.message, { position: 'top-right' })
-                
-            })
-            .catch((error)=>console.log(error))
+        const toastload = toast.loading('Deleting user...', { position: 'top-center' });
+
+        setTimeout(async () => {
+            try {
+                toast.dismiss(toastload);
+                const resp = await axios.delete(`http://localhost:4000/api/delete/user/${userid}`);
+                setUser((prevUser) => prevUser.filter((user) => user._id !== userid));
+                toast.success(resp.data.message, { position: 'top-center' });
+            } catch (error) {
+                toast.dismiss(toastload);
+            }
+        }, 2000);
 
     }
 
@@ -65,8 +70,8 @@ function User() {
                                         <span>Update</span>
                                     </button>
                                 </Link>
-                                <button 
-                                    onClick={() => handleDelete(item._id)} 
+                                <button
+                                    onClick={() => handleDelete(item._id)}
                                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-400 flex items-center space-x-1"
                                 >
                                     <RiDeleteBin2Fill />

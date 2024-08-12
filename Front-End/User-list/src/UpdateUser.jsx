@@ -20,7 +20,7 @@ const UpdateUser = () => {
         await axios
             .put(`http://localhost:4000/api/update/user/${id}`, user)//the create from teh state not backend
             .then((resp) => {
-                toast.success(resp.data.message, { position: 'top-right' })
+                toast.success(resp.data.message, { position: 'top-center' })
                 navigate('/')
             })
             .catch((error) => { console.log(error) })
